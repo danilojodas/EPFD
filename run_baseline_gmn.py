@@ -65,7 +65,7 @@ if __name__ == '__main__':
     seed = 11
 
     # Number of OPFs to compose the ensemble
-    n_models = [10,30,50,100]
+    n_models = [10,30,50]
 
     # Number of selected estimators for PyPruning
     n_estimators = [[5],[5,10,15],[10,15,25],[10,30,50]]
@@ -119,14 +119,18 @@ if __name__ == '__main__':
                     meta_opf_ensemble = MetaOPFClassifier(n_estimators=n,max_samples=None,max_features=None,labels=classes,random_state=seed)
                     meta_opf_ensemble.fit(X_train,y_train)
                     # Models list
-                    clfs = meta_opf_ensemble.estimators
+                    clfs = np.array([c.classifier for c in meta_opf_ensemble.estimators])
 
                     # Gets predictions of the base models
-                    preds =  prediction(meta_opf_ensemble.estimators,X_valid)
+                    preds =  prediction(clfs,X_valid)
 
                     # For each number of estimators to be selected
-                    for ne in n_estimators[i]:
+                    for ne in n_estimators[i]:                        
                         output_folder = '{}/EPFD_{}/{}/{}_estimators_{}/pruning/{}'.format(results_folder,p,d,n,ne,f)
+
+                        if (os.path.exists('{}/metrics.txt'.format(output_folder))):
+                            print('Folder {} with metrics already exists. Going to the next iteration...'.format(output_folder))
+                            continue
 
                         if (not os.path.exists(output_folder)):
                             os.makedirs(output_folder)
