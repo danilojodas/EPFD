@@ -130,6 +130,7 @@ if __name__ == '__main__':
 
                         if (os.path.exists('{}/metrics.txt'.format(output_folder))):
                             print('Folder {} with metrics already exists. Going to the next iteration...'.format(output_folder))
+                            all_metrics[p][d]['{}_estimators_{}'.format(n,ne)][f] = np.loadtxt('{}/metrics.txt'.format(output_folder))
                             continue
 
                         if (not os.path.exists(output_folder)):
@@ -175,6 +176,6 @@ if __name__ == '__main__':
                 for f in all_metrics[p][d][n]:
                     metrics.append(all_metrics[p][d][n][f])
                 
-                np.savetxt('{}/{}/{}/{}/pruning/all_metrics.txt'.format(results_folder,p,d,n),metrics,header='Accuracy,precision,recall,F1,n_estimators')
+                np.savetxt('{}/EPFD_{}/{}/{}/pruning/all_metrics.txt'.format(results_folder,p,d,n),metrics,header='Accuracy,precision,recall,F1,n_estimators')
         
     print('BASELINES EXECUTION FINISHED SUCCESSFULLY!')

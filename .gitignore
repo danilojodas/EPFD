@@ -6,7 +6,7 @@
 .idea/
 .vscode/
 .pytest_cache/
-.results*
+results*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
